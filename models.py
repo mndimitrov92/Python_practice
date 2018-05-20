@@ -2,8 +2,8 @@ import pickle
 
 class Url(object):
   
-  @staticmethod
-  def shorten(cls, full_url):
+  @classmethod
+  def shorten(cls ,full_url):
     """ Shortening the full URL """
     
     #Creating an instance of the URL class
@@ -16,7 +16,7 @@ class Url(object):
   @classmethod
   def get_by_short_url(cls, short_url):
     """ Returning URL instance corresponding to short URL"""
-    url_mapping = Url.load_url_mapping()
+    url_mapping = Url.__load_url_mapping()
     return url_mapping.get(short_url)
 
   def __create_short_url(self):
@@ -48,7 +48,7 @@ class Url(object):
       return ''
 
   @staticmethod
-  def __save_last_short_url():
+  def __save_last_short_url(url):
     """ Saves the last generated short URL """
     return pickle.dump(url, open("last_short.p", "wb"))
 
@@ -61,9 +61,8 @@ class Url(object):
       return {}
     
   @staticmethod
-  def __save_url_mapping():
+  def __save_url_mapping(instance):
     """ Saves short_url to Url instance mapping """
-
     short_to_url = Url.__load_url_mapping()
     short_to_url[instance.short_url] = instance
     pickle.dump(short_to_url, open("short_to_url.p", "wb"))
